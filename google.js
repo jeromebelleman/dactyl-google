@@ -1,3 +1,23 @@
+function _find(e, name)
+{
+    for (var i = 0; i < e.childNodes.length; i++) {
+        if (e.childNodes[i].nodeName == name) {
+            return e.childNodes[i];
+        }
+    }
+}
+
+function _entries(ol)
+{
+    var entries = new Array();
+    for (var i = 0; i < ol.childNodes.length; i++) {
+        if (ol.childNodes[i].nodeName == 'LI') {
+            entries.push(ol.childNodes[i]);
+        }
+    }
+    return entries;
+}
+
 function cursor(n)
 {
     var doc = content.document;
@@ -5,8 +25,7 @@ function cursor(n)
     function highlight(entries, entryi, arrow)
     {
         // LIs are interspersed with comments
-        var li = entries[entryi * 2 + 1];
-        services.console.logStringMessage("this is " + li);
+        var li = entries[entryi];
 
         // LI needs changes in attributes
         li.setAttribute('class', 'g knavi');
@@ -19,7 +38,7 @@ function cursor(n)
     function douse(entries, entryi)
     {
         // LIs are interspersed with comments
-        var li = entries[entryi * 2 + 1];
+        var li = entries[entryi];
 
         // Revert LI attributes
         li.setAttribute('class', 'g');
@@ -37,11 +56,7 @@ function cursor(n)
 
     // Get results
     var ol = doc.getElementById('rso');
-    var entries = ol.childNodes;
-
-    for (var i = 0; i < entries.length; i++) {
-        services.console.logStringMessage("this is " + i + " " + entries[i]);
-    }
+    entries = _entries(ol);
 
     // Move arrow
     var entryi = ol.getAttribute('entryi');
@@ -52,7 +67,7 @@ function cursor(n)
     } else {
         entryi = parseInt(entryi);
 
-        if (entryi + n >= 0 && (entryi + n) * 2 + 1 < entries.length) {
+        if (entryi + n >= 0 && entryi + n < entries.length) {
             entryi += n;
             ol.setAttribute('entryi', entryi);
 
@@ -68,14 +83,23 @@ function open()
 
     // Get results
     var ol = doc.getElementById('rso');
-    var entries = ol.childNodes;
+    var entries = _entries(ol);
 
     // Get current entry
     var entryi = ol.getAttribute('entryi');
 
+    // Get entry
+    var li = entries[entryi];
+
     // Find anchor
-    var li = entries[entryi * 2 + 1];
-    // Elements are interspersed with text
-    var a = li.firstChild.childNodes[3].firstChild;
+    var div = _find(li, 'DIV');
+    if (div) {
+        var h3 = _find(div, 'H3');
+        var a = _find(h3, 'A');
+    } else {
+        var a = _find(li, 'A');
+    }
+
+    // Follow link
     buffer.followLink(a);
 }
