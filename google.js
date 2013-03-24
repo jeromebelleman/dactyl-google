@@ -1,8 +1,13 @@
 function _find(e, name)
 {
     for (var i = 0; i < e.childNodes.length; i++) {
-        if (e.childNodes[i].nodeName == name) {
-            return e.childNodes[i];
+        child = e.childNodes[i];
+        if (child.nodeType == 1) { // Text nodes don't have getAttribute()
+            attr = child.getAttribute('style');
+            // Headings in LI which aren't displayed have no A
+            if (child.nodeName == name && !(attr && attr == 'display:none')) {
+                return child;
+            }
         }
     }
 }
@@ -92,12 +97,15 @@ function open()
     var li = entries[entryi];
 
     // Find anchor
-    var div = _find(li, 'DIV');
-    if (div) {
-        var h3 = _find(div, 'H3');
-        var a = _find(h3, 'A');
-    } else {
-        var a = _find(li, 'A');
+    var a, h3, div;
+    a = _find(li, 'A');
+    if (!a) {
+        h3 = _find(li, 'H3');
+        if (!h3) {
+            div = _find(li, 'DIV');
+            h3 = _find(div, 'H3');
+        }
+        a = _find(h3, 'A');
     }
 
     // Follow link
