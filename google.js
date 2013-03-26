@@ -33,7 +33,6 @@ function cursor(n)
         var li = entries[entryi];
 
         // LI needs changes in attributes
-        li.setAttribute('class', 'g knavi');
         li.setAttribute('style', 'position: relative;');
 
         // Add arrow
@@ -46,7 +45,6 @@ function cursor(n)
         var li = entries[entryi];
 
         // Revert LI attributes
-        li.setAttribute('class', 'g');
         li.removeAttribute('style');
 
         // Remove arrow
@@ -56,8 +54,9 @@ function cursor(n)
     // Create Google's arrow
     var arrow = doc.createElement('span');
     arrow.appendChild(doc.createTextNode('►'));
-    arrow.setAttribute('id', 'knavm');
-    arrow.setAttribute('style', 'padding-top: 0px;');
+    var style = 'position:absolute;left: -13px; top: 2px; ';
+    style += 'font: 11px arial,sans-serif;';
+    arrow.setAttribute('style', style);
 
     // Get results
     var ol = doc.getElementById('rso');
