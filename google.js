@@ -33,7 +33,14 @@ function cursor(n)
         var li = entries[entryi];
 
         // LI needs changes in attributes
-        li.setAttribute('style', 'position: relative;');
+        var style = li.getAttribute('style');
+        if (style) {
+            li.setAttribute('oldstyle', style);
+            style = style + ';';
+        } else {
+            style = '';
+        }
+        li.setAttribute('style', style + 'position: relative;');
 
         // Add arrow
         li.appendChild(arrow);
@@ -45,7 +52,12 @@ function cursor(n)
         var li = entries[entryi];
 
         // Revert LI attributes
-        li.removeAttribute('style');
+        var oldstyle = li.getAttribute('oldstyle');
+        if (oldstyle) {
+            li.setAttribute('style', oldstyle);
+        } else {
+            li.removeAttribute('style');
+        }
 
         // Remove arrow
         li.removeChild(li.lastChild);
