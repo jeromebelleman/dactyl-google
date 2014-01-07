@@ -109,15 +109,13 @@ function open()
 
     // Find anchor
     var a, h3, div;
-    a = _find(li, 'A');
-    if (!a) {
-        h3 = _find(li, 'H3');
-        if (!h3) {
-            div = _find(li, 'DIV');
-            h3 = _find(div, 'H3');
-        }
-        a = _find(h3, 'A');
+    div = _find(li, 'DIV');
+    h3 = _find(div, 'H3');
+    if (!h3) {
+        div = _find(div, 'DIV');
+        h3 = _find(div, 'H3');
     }
+    a = _find(h3, 'A');
 
     // Follow link
     buffer.followLink(a);
