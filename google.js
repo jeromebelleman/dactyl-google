@@ -1,3 +1,5 @@
+// Doesn't work when lookin for progit and choosing the first entry
+
 function _find(e, name)
 {
     for (var i = 0; i < e.childNodes.length; i++) {
@@ -14,13 +16,7 @@ function _find(e, name)
 
 function _entries(ol)
 {
-    var entries = new Array();
-    for (var i = 0; i < ol.childNodes.length; i++) {
-        if (ol.childNodes[i].nodeName == 'LI') {
-            entries.push(ol.childNodes[i]);
-        }
-    }
-    return entries;
+    return ol.getElementsByClassName('g');
 }
 
 function cursor(n)
